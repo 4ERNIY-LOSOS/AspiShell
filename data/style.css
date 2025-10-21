@@ -1,0 +1,30 @@
+window {
+    background-color: rgba(40, 44, 52, 0.85);
+}
+
+/* Делаем фон самого окна-контейнера панели полностью прозрачным */
+.side-panel-window {
+    background-color: transparent;
+}
+
+.side-panel {
+    background-color: rgba(40, 44, 52, 0.95);
+}
+
+label {
+    color: #abb2bf;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+/* Стиль для кнопок воркспейсов */
+button {
+    background-color: transparent;
+    border: none;
+}
+
+button.focused {
+    background-color: #61afef;
+    color: #282c34;
+    border-radius: 5px;
+}
