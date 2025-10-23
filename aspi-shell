@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Путь к директории проекта
+PROJECT_DIR="/home/merkava/AspiShell"
+
+# Активируем venv и запускаем CLI
+cd "$PROJECT_DIR"
+source .venv/bin/activate
+python aspi-cli.py "$@"

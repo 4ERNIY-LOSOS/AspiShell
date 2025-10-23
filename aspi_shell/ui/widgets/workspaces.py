@@ -1,5 +1,5 @@
 from gi.repository import Gtk, GLib
-from ..hyprland import ipc_client
+from ...core.hyprland import ipc_client
 
 class Workspaces(Gtk.Box):
     def __init__(self, *args, **kwargs):

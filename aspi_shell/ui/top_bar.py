@@ -7,6 +7,8 @@ from gi.repository import Gtk, Gdk, Gtk4LayerShell, GObject
 from .widgets.clock import Clock
 from .widgets.workspaces import Workspaces
 from .widgets.layout import Layout
+from .widgets.audio_selector import AudioSelector
+
 
 class TopBar(Gtk.ApplicationWindow):
     __gsignals__ = {
@@ -55,8 +57,12 @@ class TopBar(Gtk.ApplicationWindow):
         right_box.set_halign(Gtk.Align.END)
         main_box.append(right_box)
 
+
         layout = Layout()
         right_box.append(layout)
+
+        audio_selector = AudioSelector()
+        right_box.append(audio_selector)
 
         clock = Clock()
         right_box.append(clock)

@@ -4,7 +4,10 @@ import os
 import socket
 import subprocess
 import threading
+import logging
 from gi.repository import GObject, GLib
+
+logger = logging.getLogger(__name__)
 
 class HyprlandIPC(GObject.Object):
     __gsignals__ = {
@@ -50,7 +53,7 @@ class HyprlandIPC(GObject.Object):
                     if event_type in ('workspace', 'workspacev2', 'createworkspace', 'destroyworkspace', 'focusedmon', 'activelayout'):
                         await self._update_state_from_sockets()
             except Exception as e:
-                print(f"Hyprland listener disconnected: {e}. Reconnecting in 5s...")
+                logger.warning("Hyprland listener disconnected: %s. Reconnecting in 5s...", e)
                 await asyncio.sleep(5)
 
     async def _update_state_from_sockets(self):
@@ -73,7 +76,7 @@ class HyprlandIPC(GObject.Object):
 
             GLib.idle_add(self.emit, 'state-changed')
         except Exception as e:
-            print(f"Failed to update state from sockets: {e}")
+            logger.error("Failed to update state from sockets", exc_info=True)
 
     async def _query_socket(self, command: str) -> str:
         path = self._get_socket_path('.socket.sock')
@@ -98,6 +101,6 @@ class HyprlandIPC(GObject.Object):
         try:
             subprocess.run(['hyprctl', 'dispatch', command, arg], check=True, capture_output=True)
         except Exception as e:
-            print(f"Failed to dispatch hyprctl command: {e}")
+            logger.error("Failed to dispatch hyprctl command", exc_info=True)
 
 ipc_client = HyprlandIPC()

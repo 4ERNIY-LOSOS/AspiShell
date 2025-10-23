@@ -1,7 +1,7 @@
 import gi
 gi.require_version('Gtk', '4.0')
 from gi.repository import Gtk, GLib
-from ..hyprland import ipc_client
+from ...core.hyprland import ipc_client
 
 class Layout(Gtk.Label):
     def __init__(self, *args, **kwargs):

@@ -8,6 +8,11 @@ from pathlib import Path
 import configparser
 import subprocess
 import shlex
+import logging
+from ...utils.logging import setup_logging
+from ...utils.config import config_manager
+
+logger = logging.getLogger(__name__)
 
 class LauncherWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
@@ -84,13 +89,13 @@ class LauncherWindow(Gtk.ApplicationWindow):
         
         command_to_run = ' '.join([part for part in exec_command.split() if not part.startswith('%')])
 
-        print(f"Launching: {command_to_run}")
+        logger.info("Launching: %s", command_to_run)
         try:
             args = shlex.split(command_to_run)
             subprocess.Popen(args)
             self.get_application().quit()
         except Exception as e:
-            print(f"Failed to launch {command_to_run}: {e}")
+            logger.error("Failed to launch %s", command_to_run, exc_info=True)
 
     def load_applications(self):
         desktop_files = self._find_desktop_files()
@@ -100,7 +105,7 @@ class LauncherWindow(Gtk.ApplicationWindow):
                 self.applications.append(app_info)
         
         self.applications.sort(key=lambda app: app['name'])
-        print(f"Loaded {len(self.applications)} applications.")
+        logger.info("Loaded %d applications.", len(self.applications))
         self._populate_app_list(self.applications)
 
     def _populate_app_list(self, apps):
@@ -165,7 +170,7 @@ class LauncherWindow(Gtk.ApplicationWindow):
                         'icon': entry.get('Icon', None)
                     }
         except Exception as e:
-            print(f"Error parsing {file_path}: {e}")
+            logger.warning("Error parsing %s: %s", file_path, e)
         
         return None
 
@@ -176,7 +181,7 @@ class LauncherApp(Gtk.Application):
 
     def do_activate(self):
         provider = Gtk.CssProvider()
-        provider.load_from_path('data/style.css')
+        provider.load_from_path('aspi_shell/ui/style.css')
         Gtk.StyleContext.add_provider_for_display(
             Gdk.Display.get_default(),
             provider,
@@ -188,5 +193,9 @@ class LauncherApp(Gtk.Application):
         self.window.present()
 
 if __name__ == "__main__":
+    setup_logging()
+    logger.info("Starting AspiLauncher...")
+    config_manager.load()
+    logger.info("Configuration loaded.")
     app = LauncherApp()
     app.run(sys.argv)

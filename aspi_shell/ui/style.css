@@ -28,3 +28,28 @@ button.focused {
     color: #282c34;
     border-radius: 5px;
 }
+
+/* Стиль для всплывающего окна громкости */
+.volume-popup {
+    background-color: rgba(40, 44, 52, 0.95);
+    border-radius: 10px;
+    border: 1px solid rgba(171, 178, 191, 0.1);
+}
+
+.volume-popup label {
+    font-size: 11pt;
+}
+
+/* Стили для нового аудио-селектора */
+popover.background {
+    padding: 4px;
+}
+
+.flat-button {
+    min-height: 0;
+    min-width: 0;
+    padding: 2px;
+    background-image: none;
+    border: none;
+    box-shadow: none;
+}
